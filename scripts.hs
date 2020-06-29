@@ -25,7 +25,7 @@ factors n = [x | x <- primes n, n `mod` x == 0]
 test n = product (primes n)
 
 -- encode and decode strings using Caesar Cipher
--- encode 3 "The quick brown fox jumps over the lazy dog."
+-- example: encode 3 "The quick brown fox jumps over the lazy dog."
 -- crack (encode 3 "The quick brown fox jumps over the lazy dog.")
 let2int :: Char -> Int
 let2int c = ord c - ord 'a'

@@ -19,10 +19,27 @@ luhn a b c d | luhnSumMod a b c d == 0 = True
 -- find all prime number factors for n
 -- test is for creating a product of primes
 -- example: factors (test 10) == primes 10
+-- factorlist includes all repeated prime factors
+-- example: factorlist 1260
+-- [2,2,3,3,5,7]
 factor n = [x | x <- [1..n], n `mod` x == 0]
 primes n = [x | x <- [1..n], factor x == [1,x]]
 factors n = [x | x <- primes n, n `mod` x == 0]
 test n = product (primes n)
+safehead list | null list = 1000
+              | otherwise = head list
+safetail list | null list = []
+              | otherwise = tail list
+factorlist n | n == 0 = []
+             | n == 1 = [1]
+             | otherwise = func2 ([n `div` safehead(factors n)], 
+               factors n, [] ++ [safehead(factors n)])
+func2 ([x], ys, zs) | x == 0 = zs
+                    | x == 1 = zs
+                    | x `mod` safehead ys==0 
+                      = func2 ([x `div` safehead ys], 
+                        ys, zs ++ [safehead ys])
+                    | otherwise = func2 ([x], safetail ys, zs)
 
 -- encode and decode strings using Caesar Cipher
 -- example: encode 3 "The quick brown fox jumps over the lazy dog."

@@ -35,8 +35,7 @@ factorlist n | n <= 0 = []
              | n == 1 = [1]
              | otherwise = func2 ([n `div` safehead(factors n)], 
                factors n, [] ++ [safehead(factors n)])
-func2 ([x], ys, zs) | x == 0 = zs
-                    | x == 1 = zs
+func2 ([x], ys, zs) | x == 1 = zs
                     | x `mod` safehead ys==0 
                       = func2 ([x `div` safehead ys], 
                         ys, zs ++ [safehead ys])

@@ -31,8 +31,7 @@ safehead list | null list = 1000
 safetail list | null list = []
               | otherwise = tail list
 factorlist :: Int -> [Int]
-factorlist n | n < 0 = []
-             | n == 0 = []
+factorlist n | n <= 0 = []
              | n == 1 = [1]
              | otherwise = func2 ([n `div` safehead(factors n)], 
                factors n, [] ++ [safehead(factors n)])

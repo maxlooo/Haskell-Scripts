@@ -33,13 +33,13 @@ safetail list | null list = []
 factorlist :: Int -> [Int]
 factorlist n | n <= 0 = []
              | n == 1 = [1]
-             | otherwise = func2 ([n `div` safehead(factors n)], 
+             | otherwise = recurse ([n `div` safehead(factors n)], 
                factors n, [] ++ [safehead(factors n)])
-func2 ([x], ys, zs) | x == 1 = zs
+recurse ([x], ys, zs) | x == 1 = zs
                     | x `mod` safehead ys==0 
-                      = func2 ([x `div` safehead ys], 
+                      = recurse ([x `div` safehead ys], 
                         ys, zs ++ [safehead ys])
-                    | otherwise = func2 ([x], safetail ys, zs)
+                    | otherwise = recurse ([x], safetail ys, zs)
 
 -- encode and decode strings using Caesar Cipher
 -- example: encode 3 "The quick brown fox jumps over the lazy dog."

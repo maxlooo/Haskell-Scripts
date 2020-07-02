@@ -1,7 +1,7 @@
 -- tested using HUGS
 -- import Data.Char for Caesar Cipher
 import Data.Char
-
+---------------------------------------
 -- for checking the validity of 4 digit number
 -- examples: luhn 1 7 8 4
 -- True
@@ -15,7 +15,7 @@ luhnDouble a = if checkNumber a then a*2 - 9
 luhnSumMod a b c d = (luhnDouble a + b + luhnDouble c + d) `mod` 10
 luhn a b c d | luhnSumMod a b c d == 0 = True
              | otherwise = False
-
+---------------------------------------
 -- find all prime number factors for n
 -- test is for creating a product of primes
 -- example: factors (test 10) == primes 10
@@ -40,7 +40,7 @@ recurse ([x], ys, zs) | x == 1 = zs
                       = recurse ([x `div` safehead ys], 
                         ys, zs ++ [safehead ys])
                     | otherwise = recurse ([x], safetail ys, zs)
-
+---------------------------------------
 -- encode and decode strings using Caesar Cipher
 -- example: encode 3 "The quick brown fox jumps over the lazy dog."
 -- crack (encode 3 "The quick brown fox jumps over the lazy dog.")
@@ -90,3 +90,23 @@ crack xs = encode (-factor) xs
     factor = head (positions (minimum chitab) chitab)
     chitab = [chisqr (rotate n table') table | n <- [0..25]]
     table' = freqs (stringToLower xs)
+---------------------------------------
+-- using halve and merge to sort a list
+-- example: msort [2,1,5,3,6,4,9,2,3]
+-- [1,2,2,3,3,4,5,6,9]
+-- example: msort "The quick brown fox jumps over the lazy dog."
+-- "        .Tabcdeeefghhijklmnoooopqrrstuuvwxyz"
+merge :: Ord a => [a] -> [a] -> [a]
+merge [] ys = ys
+merge xs [] = xs
+merge (x:xs) (y:ys) | x > y = merge (y:x:xs) ys
+                    | x <= y = x : merge (xs) (y:ys)
+halve list = (take (length list `div` 2) list, 
+  drop (length list `div` 2) list)
+msort :: Ord a => [a] -> [a]
+msort list | null list = []
+           | tail list == [] = list
+           | otherwise = msort( fst (halve list)) 
+              `merge` msort( snd (halve list))
+
+

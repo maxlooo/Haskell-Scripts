@@ -2,19 +2,25 @@
 -- import Data.Char for Caesar Cipher
 import Data.Char
 ---------------------------------------
--- for checking the validity of 4 digit number
--- examples: luhn 1 7 8 4
+-- for checking the luhn validity of multiple digits number
+-- examples: luhn [1,7,8,4]
 -- True
--- luhn 4 7 8 3
+-- luhn [4,7,8,3]
 -- False
-checkNumber :: Int -> Bool
-checkNumber a = if a*2 > 9 then True
-  else False
-luhnDouble a = if checkNumber a then a*2 - 9
-  else a*2
-luhnSumMod a b c d = (luhnDouble a + b + luhnDouble c + d) `mod` 10
-luhn a b c d | luhnSumMod a b c d == 0 = True
-             | otherwise = False
+altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
+altMap f g [] = []
+altMap f g [x] = [f x]
+altMap f g (x:y:zs) = f x : g y : altMap f g zs
+calculate list = sum (altMap (*1) func (reverse list))
+  where func x | x*2 < 9 = x*2
+               | otherwise = x*2 - 9
+-- default luhn :: Integral a => [a] -> Bool
+luhn :: [Int] -> Bool
+luhn list | calculate list `mod` 10 == 0 = True
+          | otherwise = False
+-- generate creates 4 digit tuples of luhn valid numbers
+generate = [(a,b,c,d) | a <- [1..9], b <- [1..9], 
+             c <- [1..9], d <- [1..9], luhn [a,b,c,d]]
 ---------------------------------------
 -- find all prime number factors for n
 -- test is for creating a product of primes

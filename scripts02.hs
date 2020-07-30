@@ -54,7 +54,7 @@ rmdups []     = []
 rmdups (x:xs) = x : filter (/= x) (rmdups xs)
 -- | A function that evaluates a proposition 
 -- given a substitution for its variables
--- defined by pattern matching on the five 
+-- defined by pattern matching on the seven 
 -- possible forms that the proposition can
 -- have.
 eval :: Subst -> Prop -> Bool
@@ -72,7 +72,9 @@ eval s (And p q)   = eval s p && eval s q
 -- | The value of an implication is obtained 
 -- by the `<=` ordering on logical values.
 eval s (Imply p q) = eval s p <= eval s q
+-- logical disjunction
 eval s (Or p q) = eval s p || eval s q
+-- equivalence
 eval s (Equal p q) = eval s p == eval s q
 -- | A function that returns a list of all 
 -- the variables in a proposition.
